@@ -14,4 +14,8 @@ function handleSuccess(res, data, statusCode = 200, message = 'fetched successfu
     })
 }
 
-module.exports = { handleSuccess , handleError }   
+const notFound = (res) => res.status(200).send({success: true, message: 'not found'})
+    
+
+
+module.exports = { handleSuccess , handleError, notFound }   
