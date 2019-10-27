@@ -15,7 +15,7 @@ const Person = mongoose.Schema({
     },
     stories: [{   
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Story' 
+        ref: 'story' 
     }]
 });
 

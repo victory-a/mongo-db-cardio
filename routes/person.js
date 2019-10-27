@@ -10,12 +10,14 @@ router.get('/', (req, res) => {
 
 router.get('/:personId', (req, res) => {
     Person.findOne({_id: req.params.personId})
+    .populate('story')
     .then(person => handleSuccess(res, person, ))
     .catch(err => handleError(err, res))
 })
 
 router.post('/', (req, res) => {
     const author = new Person({
+        _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         age: req.body.age,
         category: req.body.category

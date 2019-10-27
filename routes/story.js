@@ -10,16 +10,16 @@ router.get('/', (req, res) => {
 
 router.get('/:storyId', (req, res) => {
     Story.findOne({_id: req.params.storyId},'-__v')
-        .populate('author')
+        .populate('author', 'name age')
+        .populate('fans', 'name age')
         .then(story => handleSuccess(res, story))
         .catch(err => handleError(err, res))
 }); 
 
 router.post('/', (req, res) => {
     const story = new Story({
-        author: req.body.authorId,
+        author: req.body.author,
         title: req.body.title,
-        fans: []
     });   
     story.save()
         .then(story => handleSuccess(res, story, 201, 'story created successfully'))
