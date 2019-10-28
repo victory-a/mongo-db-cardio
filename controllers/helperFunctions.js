@@ -14,7 +14,7 @@ function handleSuccess(res, data, statusCode = 200, message = 'fetched successfu
     })
 }
 
-const notFound = (res) => res.status(200).send({success: true, message: 'not found'})
+const notFound = (res) => res.status(404).send({success: true, message: 'not found'})
     
 
 
