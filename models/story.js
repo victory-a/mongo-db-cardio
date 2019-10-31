@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const Story = mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'person'
+    ref: 'person',
+    required: true
   },
   title: {
     type: String,

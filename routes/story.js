@@ -4,14 +4,17 @@ const { handleError, handleSuccess, notFound } = require('../controllers/helperF
 
 router.get('/', (req, res) => {
   Story.find()
+    .populate({
+      path: 'author',
+      select: 'name age -_id'
+    })
     .then(story => handleSuccess(res, story))
     .catch(err => handleError(err, res))
 })
-
+// { age: { $gte: 21 } },
 router.get('/:storyId', (req, res) => {
   Story.findOne({ _id: req.params.storyId }, '-__v')
-    .populate('author', 'name age')
-    .populate('fans', 'name age')
+    .populate({ path: 'author', populate: { path: 'partner' } })
     .then(story => {
       if (!story) return notFound(res)
       handleSuccess(res, story)
@@ -20,28 +23,39 @@ router.get('/:storyId', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  const story = new Story({
-    author: req.body.author,
-    title: req.body.title
-  })
+  const { author, title } = req.body
+  const story = new Story({ author, title })
   story.save()
     .then(story => handleSuccess(res, story, 201, 'story created successfully'))
     .catch(err => handleError(err, res, 500, 'create story unsuccessful'))
 })
 
-// router.patch('/:storyId', (req, res) => {
-//   const { fan, author } = req.body
-//   const update = {}
-//   if (fan) Object.assign(update, { $push: { fans, fan } })
-//   if (author) Object.assign(update, { $set: { author } })
-//   Story.findOneAndUpdate({ _id: req.params.storyId }, update, function (err, data) {
-//     if (!data) return notFound(res)
-//   })
-//     .then(story => {
-//       if (!story) return notFound(res)
-//       handleSuccess(res, story, 201, 'update successful')
-// })
-//     .catch(err => handleError(err, res, 500, 'update unsuccessful'))
-// })
+router.patch('/:storyId', (req, res) => {
+  const update = { $set: { ...req.body } }
+  Story.updateOne({ _id: req.params.storyId }, update)
+    .then(story => {
+      if (!story) return notFound(res)
+      handleSuccess(res, story, 201, 'update successful')
+    })
+    .catch(err => handleError(err, res, 500, 'update unsuccessful'))
+})
+
+router.patch('/:storyId/fans', (req, res) => {
+  const update = { $push: { fans: req.body.fan } }
+  Story.updateOne({ _id: req.params.storyId }, update)
+    .then(story => {
+      if (!story) return notFound(res)
+      handleSuccess(res, story, 201, 'update successful')
+    })
+    .catch(err => handleError(err, res, 500, 'update unsuccessful'))
+})
+
+router.delete('/:storyId', (req, res) => {
+  Story.findByIdAndRemove(req.params.storyId)
+    .then(story => {
+      if (!story) return notFound(res)
+      handleSuccess(res, story, 200, 'successfully deleted')
+    })
+})
 
 module.exports = router

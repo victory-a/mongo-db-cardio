@@ -7,24 +7,22 @@ const morgan = require('morgan')
 // routes
 const personRoute = require('./routes/person')
 const storyRoute = require('./routes/story')
+const partnerRoute = require('./routes/partner')
 
 // middlewares
 app.use(bodyParser.json())
 app.use(morgan('dev'))
 app.use('/person', personRoute)
 app.use('/story', storyRoute)
+app.use('/partner', partnerRoute)
 
-mongoose.set('useUnifiedTopology', true)
-mongoose.set('useNewUrlParser', true)
-mongoose.connect('mongodb://localhost/populate', { useNewUrlParser: true, useUnifiedTopology: true })
-
-// app.use(function (err, req, res, next) {
-//     res.status(500).json({
-//         success: false,
-//         message: 'something went wrong',
-//         err
-//     })
-// })
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false
+}
+mongoose.createConnection('mongodb://localhost/populate', options)
+  .catch(error => { return { error } })
 
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))

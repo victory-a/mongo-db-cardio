@@ -10,6 +10,7 @@ function handleSuccess (res, data, statusCode = 200, message = 'fetched successf
   return res.status(statusCode).json({
     success: true,
     message,
+    count: data.length,
     data
   })
 }

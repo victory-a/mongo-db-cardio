@@ -4,7 +4,8 @@ const { handleError, handleSuccess, notFound } = require('../controllers/helperF
 
 //  get all persons from DB
 router.get('/', (req, res) => {
-  Person.find()
+  Person.find({ age: { $lt: 24 } })
+    .populate('partner')
     .then(person => handleSuccess(res, person))
     .catch(err => handleError(err, res))
 })
@@ -21,24 +22,17 @@ router.get('/:personId', (req, res) => {
 
 // create a new person
 router.post('/', (req, res) => {
-  const author = new Person({
-    name: req.body.name,
-    age: req.body.age,
-    category: req.body.category
-  })
+  const author = new Person({ ...req.body })
   author.save()
     .then(person => handleSuccess(res, person, 200, `${req.body.category} created successfully`))
     .catch(err => handleError(err, res, 500))
 })
 
-router.patch('/personId', (req, res) => {
+router.patch('/:personId', (req, res) => {
   Person.updateOne(
     { _id: req.params.personId },
-    {
-      $set: {
-        ...req.body
-      }
-    })
+    { $set: { ...req.body } }
+  ).then(person => handleSuccess(res, person, 200, 'update successful'))
 })
 
 // delete a specific person
@@ -46,7 +40,7 @@ router.delete('/:personId', (req, res) => {
   Person.findOneAndRemove({ _id: req.params.personId })
     .then(person => {
       if (!person) return notFound(res)
-      handleSuccess(res, person)
+      handleSuccess(res, person, 200, 'deleted successfully')
     })
     .catch(err => handleError(err, res))
 })

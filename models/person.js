@@ -16,7 +16,11 @@ const Person = mongoose.Schema({
   stories: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'story'
-  }]
+  }],
+  partner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'partner'
+  }
 })
 
 module.exports = mongoose.model('person', Person)
