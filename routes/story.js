@@ -6,10 +6,10 @@ router.get('/', (req, res) => {
   Story.aggregate([
     {
       $lookup: {
-        from: 'perso',
-        localField: 'title',
-        foreignField: 'name',
-        as: 'pioneer'
+        from: 'people',
+        localField: 'author',
+        foreignField: '_id',
+        as: 'author'
       }
     }
   ])
