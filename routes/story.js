@@ -3,11 +3,17 @@ const Story = require('../models/story')
 const { handleError, handleSuccess, notFound } = require('../controllers/helperFunctions')
 
 router.get('/', (req, res) => {
-  Story.find()
-    .populate({
-      path: 'author',
-      select: 'name age -_id'
-    })
+  Story.aggregate([
+    {
+      $lookup: {
+        from: 'perso',
+        localField: 'title',
+        foreignField: 'name',
+        as: 'pioneer'
+      }
+    }
+  ])
+  // .populate('author')
     .then(story => handleSuccess(res, story))
     .catch(err => handleError(err, res))
 })

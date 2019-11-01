@@ -21,7 +21,7 @@ const options = {
   useUnifiedTopology: true,
   useFindAndModify: false
 }
-mongoose.createConnection('mongodb://localhost/populate', options)
+mongoose.connect('mongodb://localhost/populate', options)
   .catch(error => { return { error } })
 
 const db = mongoose.connection
