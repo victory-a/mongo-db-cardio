@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const Story = mongoose.Schema({
+module.exports = mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'person',
@@ -15,5 +15,3 @@ const Story = mongoose.Schema({
     ref: 'person'
   }]
 })
-
-module.exports = mongoose.model('story', Story)

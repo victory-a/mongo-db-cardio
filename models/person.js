@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const Person = mongoose.Schema({
+module.exports = mongoose.Schema({
   name: {
     type: String,
     required: true
@@ -22,5 +22,3 @@ const Person = mongoose.Schema({
     ref: 'partner'
   }
 })
-
-module.exports = mongoose.model('person', Person)

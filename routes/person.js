@@ -1,11 +1,11 @@
 const router = require('express').Router()
-const Person = require('../models/person')
+const { Person, Partner } = require('../models/createModels')
 const { handleError, handleSuccess, notFound } = require('../controllers/helperFunctions')
 
 //  get all persons from DB
 router.get('/', (req, res) => {
   Person.find({ age: { $lt: 24 } })
-    .populate('partner')
+    .populate({ path: 'partner', model: Partner })
     .then(person => handleSuccess(res, person))
     .catch(err => handleError(err, res))
 })

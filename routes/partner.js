@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Partner = require('../models/partner')
+const { Partner } = require('../models/createModels')
 const { handleError, handleSuccess, notFound } = require('../controllers/helperFunctions')
 
 router.get('/', (req, res) => {
@@ -10,7 +10,8 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   const { name, color } = req.body
-  Partner.create({ name, color })
+  const partner = new Partner({ name, color })
+  partner.save()
     .then(partner => handleSuccess(res, partner, 200, 'partner created successfully'))
     .catch(err => handleError(err, res, 400, 'create partner unsucessful'))
 })

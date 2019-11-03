@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
 
-const Partner = mongoose.Schema({
+module.exports = mongoose.Schema({
   name: {
     type: String,
     required: true
   },
-  color: String
+  color: {
+    type: String,
+    required: true
+  }
 })
-
-module.exports = mongoose.model('partner', Partner)

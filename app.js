@@ -16,17 +16,5 @@ app.use('/person', personRoute)
 app.use('/story', storyRoute)
 app.use('/partner', partnerRoute)
 
-const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false
-}
-mongoose.connect('mongodb://localhost/populate', options)
-  .catch(error => { return { error } })
-
-const db = mongoose.connection
-db.on('error', console.error.bind(console, 'connection error:'))
-db.once('open', () => console.log('db successfully connected'))
-
 const PORT = process.env.port || 3000
 app.listen(PORT, () => console.log(`server listening on port ${PORT}`))

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Story = require('../models/story')
+const { Story } = require('../models/createModels')
 const { handleError, handleSuccess, notFound } = require('../controllers/helperFunctions')
 
 router.get('/', (req, res) => {
@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
     .then(story => handleSuccess(res, story))
     .catch(err => handleError(err, res))
 })
-// { age: { $gte: 21 } },
+
 router.get('/:storyId', (req, res) => {
   Story.findOne({ _id: req.params.storyId }, '-__v')
     .populate({ path: 'author', populate: { path: 'partner' } })
