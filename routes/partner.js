@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Partner } = require('../models/createModels')
+const { Partner } = require('../models/defineDBandModels')
 const { handleError, handleSuccess, notFound } = require('../controllers/helperFunctions')
 
 router.get('/', (req, res) => {
